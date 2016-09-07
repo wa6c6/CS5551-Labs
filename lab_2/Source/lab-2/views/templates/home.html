@@ -1,46 +1,8 @@
 {{#yield-style}}
 <link rel="stylesheet" href="/stylesheets/home.css">
 {{/yield-style}}
-<!--<!DOCTYPE html>-->
-<!--<html>-->
-<!--<head>-->
-    <!--<meta name="viewport" content="initial-scale=1.0, user-scalable=no">-->
-    <!--<meta charset="utf-8">-->
-    <!--<title>Directions service</title>-->
-    <!--<style>-->
-        <!--html, body {-->
-            <!--height: 100%;-->
-            <!--margin: 0;-->
-            <!--padding: 0;-->
-        <!--}-->
-        <!--#map {-->
-            <!--height: 100%;-->
-        <!--}-->
-        <!--#floating-panel {-->
-            <!--position: absolute;-->
-            <!--top: 10px;-->
-            <!--left: 25%;-->
-            <!--z-index: 5;-->
-            <!--background-color: #fff;-->
-            <!--padding: 5px;-->
-            <!--border: 1px solid #999;-->
-            <!--text-align: center;-->
-            <!--font-family: 'Roboto','sans-serif';-->
-            <!--line-height: 30px;-->
-            <!--padding-left: 10px;-->
-        <!--}-->
-    <!--</style>-->
-<!--</head>-->
-<!--<body>-->
+
 <div id="floating-panel">
-    <!--<b>Start: </b>-->
-    <!--<input id="start">-->
-    <!--</input>-->
-    <!--<b>End: </b>-->
-    <!--<input id="end">-->
-    <!--</input>-->
-    <!--<input type="submit" id="submit">-->
-    <!--<table style="width:100%">-->
     <table>
         <tr>
             <td><b>Start: </b><input id="start"></td>
@@ -55,22 +17,6 @@
     </table>
 </div>
 <div id="map"></div>
-
-<!--<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.0/jquery.min.js"></script>-->
-<!--<script>-->
-<!--//    $("#submit").onclick(function($) {-->
-<!--//    jQuery(document).ready(function($) {-->
-<!--//        $.ajax({-->
-<!--//            url : "http://api.wunderground.com/api/36b799dc821d5836/geolookup/conditions/q/IA/Cedar_Rapids.json",-->
-<!--//            dataType : "jsonp",-->
-<!--//            success : function(parsed_json) {-->
-<!--//                var location = parsed_json['location']['city'];-->
-<!--//                var temp_f = parsed_json['current_observation']['temp_f'];-->
-<!--//                alert("Current temperature in " + location + " is: " + temp_f);-->
-<!--//            }-->
-<!--//        });-->
-<!--//    });-->
-<!--</script>-->
 
 {{#yield-scripts}}
 <script>
@@ -87,15 +33,11 @@
         var input = (document.getElementById('start'));
         var autocomplete = new google.maps.places.Autocomplete(input);
         autocomplete.bindTo('bounds', map);
+
         var input_end = (document.getElementById('end'));
         var autocomplete_end = new google.maps.places.Autocomplete(input_end);
         autocomplete_end.bindTo('bounds', map);
 
-//        var onChangeHandler = function() {
-//            calculateAndDisplayRoute(directionsService, directionsDisplay);
-//        };
-//        document.getElementById('start').addEventListener('change', onChangeHandler);
-//        document.getElementById('end').addEventListener('change', onChangeHandler);
         document.getElementById('submit').addEventListener('click', function() {
             calculateAndDisplayRoute(directionsService, directionsDisplay);
         });
@@ -158,20 +100,16 @@
         document.getElementById('start-weather').innerHTML  = "";
 
         $.ajax({
-//            url : "http://api.wunderground.com/api/36b799dc821d5836/geolookup/conditions/q/IA/Cedar_Rapids.json",
-//            url : "http://api.wunderground.com/api/36b799dc821d5836/geolookup/conditions/q/" + document.getElementById('start').value + ".json",
             url : "http://api.wunderground.com/api/36b799dc821d5836/geolookup/conditions/q/" + weatherState(document.getElementById('start').value) + "/" + weatherCity(document.getElementById('start').value) + ".json",
             dataType : "jsonp",
             success : function(parsed_json) {
                 var location = parsed_json['location']['city'];
                 var temp_f = parsed_json['current_observation']['temp_f'];
-                //alert("Current temperature in " + location + " is: " + temp_f);
+//                alert("Current temperature in " + location + " is: " + temp_f);
                 document.getElementById('start-weather').innerHTML  = location + " temp is: " + temp_f + "&deg";
             }
         })
         $.ajax({
-//            url : "http://api.wunderground.com/api/36b799dc821d5836/geolookup/conditions/q/IA/Cedar_Rapids.json",
-//            url : "http://api.wunderground.com/api/36b799dc821d5836/geolookup/conditions/q/" + document.getElementById('end').value + ".json",
             url : "http://api.wunderground.com/api/36b799dc821d5836/geolookup/conditions/q/" + weatherState(document.getElementById('end').value) + "/" + weatherCity(document.getElementById('end').value) + ".json",
             dataType : "jsonp",
             success : function(parsed_json) {
@@ -201,5 +139,3 @@
         async defer>
 </script>
 {{/yield-scripts}}
-<!--</body>-->
-<!--</html>-->
