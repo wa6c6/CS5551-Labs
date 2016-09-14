@@ -20,6 +20,8 @@
 
 {{#yield-scripts}}
 <script>
+    var distance;
+    var duration;
 
     function initMap() {
         var directionsService = new google.maps.DirectionsService;
@@ -41,9 +43,6 @@
         document.getElementById('submit').addEventListener('click', function() {
             calculateAndDisplayRoute(directionsService, directionsDisplay);
         });
-
-        ///////////// Destination Matrix
-
     }
 
     autocomplete.addListener('place_changed', function() {
@@ -125,6 +124,68 @@
 
         // Make the TTS button visible
         document.getElementById("tts").setAttribute("type", "submit");
+
+        /////////////
+        ///////////// Destination Matrix
+        /////////////
+        console.log("input = " + document.getElementById('start').value);
+        console.log("input_end = " + document.getElementById('end').value);
+
+//        var geocoder = new google.maps.Geocoder;
+
+        var service = new google.maps.DistanceMatrixService;
+        service.getDistanceMatrix({
+            origins: [document.getElementById('start').value],
+            destinations: [document.getElementById('end').value],
+            travelMode: 'DRIVING',
+            unitSystem: google.maps.UnitSystem.IMPERIAL,
+            avoidHighways: false,
+            avoidTolls: false
+        }, function(response, status) {
+            if (status !== 'OK') {
+                alert('Error was: ' + status);
+            } else {
+//                var originList = response.originAddresses;
+//                var destinationList = response.destinationAddresses;
+//                var outputDiv = document.getElementById('output');
+//                outputDiv.innerHTML = '';
+//                deleteMarkers(markersArray);
+
+//                var showGeocodedAddressOnMap = function(asDestination) {
+//                    var icon = asDestination ? destinationIcon : originIcon;
+//                    return function(results, status) {
+//                        if (status === 'OK') {
+//                            map.fitBounds(bounds.extend(results[0].geometry.location));
+//                            markersArray.push(new google.maps.Marker({
+//                                map: map,
+//                                position: results[0].geometry.location,
+//                                icon: icon
+//                            }));
+//                        } else {
+//                            alert('Geocode was not successful due to: ' + status);
+//                        }
+//                    };
+//                };
+
+                distance = response.rows[0].elements[0].distance.text;
+                console.log("distance = " + distance);
+                duration = response.rows[0].elements[0].duration.text;
+                console.log("duration = " + duration);
+
+//                for (var i = 0; i < originList.length; i++) {
+//                    var results = response.rows[i].elements;
+//                    geocoder.geocode({'address': originList[i]},
+//                            showGeocodedAddressOnMap(false));
+//                    for (var j = 0; j < results.length; j++) {
+//                        geocoder.geocode({'address': destinationList[j]},
+//                                showGeocodedAddressOnMap(true));
+//                        outputDiv.innerHTML += originList[i] + ' to ' + destinationList[j] +
+//                                ': ' + results[j].distance.text + ' in ' +
+//                                results[j].duration.text + '<br>';
+//                    }
+//                }
+            }
+        });
     }
 
     function weatherCity(str){
@@ -144,13 +205,27 @@
 
     function textToSpeech(){
         console.log("in textToSpeech()");
-        var str = "The temperature in " + weatherCity(document.getElementById('start').value) + " is " + cityTemp(document.getElementById("start-weather").innerHTML) +
-                  ", and the temperature in " + weatherCity(document.getElementById('end').value) + " is " + cityTemp(document.getElementById("end-weather").innerHTML) + ".";
+
+        var str = "The temperature in " + weatherCity(document.getElementById('start').value) + " is " + tempToSpeech(cityTemp(document.getElementById("start-weather").innerHTML)) +
+                  ", and the temperature in " + weatherCity(document.getElementById('end').value) + " is " + tempToSpeech(cityTemp(document.getElementById("end-weather").innerHTML)) +
+                  ". The distance between these two cities is " + distance + ", and your estimated travel time, by car, is " + duration + ".";
         console.log("str = " + str);
 
         responsiveVoice.speak(str);
     }
 
+    function tempToSpeech(str) {
+        console.log("in textToSpeech()");
+        console.log("str = " + str);
+
+        if(str.indexOf(".") > 0){
+            var a = str.split(".");
+            console.log("return: " + a[0] + " point " + a[1]);
+            return a[0] + " point " + a[1];
+        }
+
+        return str;
+    }
 </script>
 <!--<script async defer-->
 <!--src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAoQcF6XUgCCYspit9kayYmNQoSyIXmA2Q&callback=initMap">-->
