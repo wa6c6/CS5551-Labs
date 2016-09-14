@@ -5,7 +5,7 @@
 
 <div class="container-fluid" id="content">
 
-    <!--<form class="form-login">-->
+    <!--<form class="form-login" id="login">-->
         <!--&lt;!&ndash;<h2 class="form-login-heading">Google Login</h2>&ndash;&gt;-->
         <!--<button class="btn btn-lg btn-primary btn-block" id="signin-button" >Google Login</button>-->
     <!--</form>-->
@@ -16,7 +16,16 @@
 
     <!--<div id="content"></div>-->
 
-    <button class="btn btn-lg btn-primary btn-block" id="signin-button">Sign in</button>
+    <div class="row">
+        <!-- Left Padding -->
+        <div class="col-md-5 col-lg-5"></div>
+        <!-- Button -->
+        <div class="col-md-2 col-lg-2">
+            <button class="btn btn-lg btn-primary btn-block" id="signin-button">Google Login</button>
+        </div>
+        <!-- Right Padding -->
+        <div class="col-md-5 col-lg-5"></div>
+    </div>
 
 </div>
 
@@ -51,6 +60,9 @@
     function makeApiCall() {
         console.log('in makeApiCall');
         window.location.replace('http://localhost:55513/mashup');
+
+//        document.getElementById("login").setAttribute("action","/mashup");
+//        document.getElementById("login").setAttribute("method", "get");
     }
 
     gapi.load('client:auth2', initAuth);

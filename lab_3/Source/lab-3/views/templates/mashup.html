@@ -41,6 +41,9 @@
         document.getElementById('submit').addEventListener('click', function() {
             calculateAndDisplayRoute(directionsService, directionsDisplay);
         });
+
+        ///////////// Destination Matrix
+
     }
 
     autocomplete.addListener('place_changed', function() {
@@ -142,7 +145,7 @@
     function textToSpeech(){
         console.log("in textToSpeech()");
         var str = "The temperature in " + weatherCity(document.getElementById('start').value) + " is " + cityTemp(document.getElementById("start-weather").innerHTML) +
-                  " and the temperature in " + weatherCity(document.getElementById('end').value) + " is " + cityTemp(document.getElementById("end-weather").innerHTML) + ".";
+                  ", and the temperature in " + weatherCity(document.getElementById('end').value) + " is " + cityTemp(document.getElementById("end-weather").innerHTML) + ".";
         console.log("str = " + str);
 
         responsiveVoice.speak(str);
