@@ -5,17 +5,6 @@
 
 <div class="container-fluid" id="content">
 
-    <!--<form class="form-login" id="login">-->
-        <!--&lt;!&ndash;<h2 class="form-login-heading">Google Login</h2>&ndash;&gt;-->
-        <!--<button class="btn btn-lg btn-primary btn-block" id="signin-button" >Google Login</button>-->
-    <!--</form>-->
-
-    <!--&lt;!&ndash;Add buttons to initiate auth sequence and sign out&ndash;&gt;-->
-    <!--<button id="authorize-button" style="display: none;">Authorize</button>-->
-    <!--<button id="signout-button" style="display: none;">Sign Out</button>-->
-
-    <!--<div id="content"></div>-->
-
     <div class="row">
         <!-- Left Padding -->
         <div class="col-md-5 col-lg-5"></div>
@@ -32,6 +21,7 @@
 {{#yield-scripts}}
 <script src="https://apis.google.com/js/api.js"></script>
 <script>
+
     var apiKey = 'AIzaSyArXhXTlepX0ElU44XE5pcozlsunGo1saA';
     var clientId = '137507044422-vkgqhpqff9a77blmtcop4sv8gr5mn421.apps.googleusercontent.com';
     var scopes = 'profile';
@@ -59,13 +49,12 @@
     // Load the API and make an API call.  Display the results on the screen.
     function makeApiCall() {
         console.log('in makeApiCall');
+        // redirect
         window.location.replace('http://localhost:55513/mashup');
-
-//        document.getElementById("login").setAttribute("action","/mashup");
-//        document.getElementById("login").setAttribute("method", "get");
     }
 
     gapi.load('client:auth2', initAuth);
+
 </script>
 {{/yield-scripts}}
 
