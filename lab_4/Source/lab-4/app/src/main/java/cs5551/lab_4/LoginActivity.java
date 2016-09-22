@@ -47,7 +47,7 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
 
     /**
      * A dummy authentication store containing known user names and passwords.
-     * TODO: remove after connecting to a real authentication system.
+     * TODO: I would need to remove this when plugging into the proprietary OAuth service.
      */
     private static final String[] DUMMY_CREDENTIALS = new String[]{
             "admin@whatever.com:admin", "wayne@whatever.com:wayne"
