@@ -1,5 +1,9 @@
 angular.module('starter.controllers', [])
 
+//.controller('LoginCtrl', function ($scope, formData) {
+//    $scope.user = formData.getForm();
+//})
+
 .controller('HomeCtrl', function ($scope, $state, $cordovaGeolocation) {
     var options = { timeout: 10000, enableHighAccuracy: true };
 
@@ -21,16 +25,15 @@ angular.module('starter.controllers', [])
 })
 
 .controller('RegisterCtrl', function ($scope, $state, formData) {
-    $scope.user = {};
+    $scope.user = formData.getForm();
 
     $scope.submitForm = function (user) {
         if (user.firstName && user.lastName) {
             formData.updateForm(user);
-//            alert("user.firstName:" + formData.getForm().firstName);
+            //            alert("user.firstName:" + formData.getForm().firstName);
             $state.go('login');
         } else {
             alert("Please fill out at least first and last name.");
         }
     };
-
 })
