@@ -78,7 +78,7 @@
       <file leaf-file-name="register.html" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/views/templates/register.html">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="-1185">
+            <state relative-caret-position="400">
               <caret line="20" column="65" selection-start-line="20" selection-start-column="65" selection-end-line="20" selection-end-column="65" />
               <folding />
             </state>
@@ -195,6 +195,7 @@
     </navigator>
     <panes>
       <pane id="Scratches" />
+      <pane id="Scope" />
       <pane id="ProjectPane">
         <subPane>
           <PATH>
@@ -325,7 +326,6 @@
           </PATH>
         </subPane>
       </pane>
-      <pane id="Scope" />
     </panes>
   </component>
   <component name="PropertiesComponent">
@@ -429,11 +429,12 @@
       <workItem from="1473857970625" duration="144000" />
       <workItem from="1475032197063" duration="311000" />
       <workItem from="1475113746369" duration="1390000" />
+      <workItem from="1475190759918" duration="1231000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="48890000" />
+    <option name="totallyTimeSpent" value="50121000" />
   </component>
   <component name="TodoView">
     <todo-panel id="selected-file">
@@ -445,7 +446,7 @@
     </todo-panel>
   </component>
   <component name="ToolWindowManager">
-    <frame x="-9" y="39" width="1938" height="1050" extended-state="6" />
+    <frame x="-9" y="39" width="1938" height="1050" extended-state="7" />
     <editor active="true" />
     <layout>
       <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.16226216" sideWeight="0.4948905" order="0" side_tool="false" content_ui="tabs" />
@@ -851,7 +852,7 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/views/templates/register.html">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-1185">
+        <state relative-caret-position="400">
           <caret line="20" column="65" selection-start-line="20" selection-start-column="65" selection-end-line="20" selection-end-column="65" />
           <folding />
         </state>
