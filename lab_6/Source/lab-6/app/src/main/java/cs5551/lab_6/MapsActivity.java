@@ -8,6 +8,7 @@ import android.location.Geocoder;
 import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
+import android.os.Environment;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.FragmentActivity;
 import android.os.Bundle;
@@ -20,6 +21,7 @@ import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
 
+import java.io.File;
 import java.util.List;
 
 public class MapsActivity extends FragmentActivity implements OnMapReadyCallback {
@@ -123,7 +125,9 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         mMap.addMarker(new MarkerOptions().position(userCurrentLocationCorodinates)
                 .title("Your current address.").snippet(userAddress.toString())
 //                .icon(BitmapDescriptorFactory.fromResource(R.drawable.marker_maps)));
-                .icon(BitmapDescriptorFactory.fromResource(R.xml.file_paths)));
+                // BUG: https://code.google.com/p/gmaps-api-issues/issues/detail?id=4637
+//                .icon(BitmapDescriptorFactory.fromFile(getExternalFilesDir(Environment.DIRECTORY_PICTURES) + File.separator + "map_marker.jpg")));
+                .icon(BitmapDescriptorFactory.fromPath(getExternalFilesDir(Environment.DIRECTORY_PICTURES) + "/map_marker.jpg")));
         //Setting the zoom level of the map.
         mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(userCurrentLocationCorodinates, 7));
     }

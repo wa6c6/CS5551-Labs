@@ -6,6 +6,7 @@ import android.annotation.TargetApi;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.os.Environment;
 import android.provider.MediaStore;
 import android.support.annotation.NonNull;
@@ -108,6 +109,14 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
 
 //        mPhotoButton = (ImageButton) findViewById(R.id.photoButton);
         mPhotoView = (ImageView) findViewById(R.id.photoView);
+
+        // If a pic already exists
+        File imgFile = new File(getExternalFilesDir(Environment.DIRECTORY_PICTURES), "map_marker.jpg");
+        if(imgFile.exists()) {
+            Bitmap myBitmap = BitmapFactory.decodeFile(imgFile.getAbsolutePath());
+            mPhotoView.setImageBitmap(myBitmap);
+        }
+
     }
 
     private void populateAutoComplete() {
