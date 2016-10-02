@@ -3,15 +3,19 @@ package cs5551.lab_6;
 import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
 import android.annotation.TargetApi;
+import android.content.ContentResolver;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.media.ThumbnailUtils;
 import android.os.Environment;
 import android.provider.MediaStore;
 import android.support.annotation.NonNull;
 import android.support.design.widget.Snackbar;
 import android.support.v4.content.FileProvider;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.app.LoaderManager.LoaderCallbacks;
 
@@ -38,8 +42,10 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -50,7 +56,7 @@ import static android.Manifest.permission.READ_CONTACTS;
  */
 public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<Cursor> {
 
-//    ImageButton mPhotoButton;
+    //    ImageButton mPhotoButton;
     ImageView mPhotoView;
 
     /**
@@ -112,11 +118,10 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
 
         // If a pic already exists
         File imgFile = new File(getExternalFilesDir(Environment.DIRECTORY_PICTURES), "map_marker.jpg");
-        if(imgFile.exists()) {
+        if (imgFile.exists()) {
             Bitmap myBitmap = BitmapFactory.decodeFile(imgFile.getAbsolutePath());
             mPhotoView.setImageBitmap(myBitmap);
         }
-
     }
 
     private void populateAutoComplete() {
@@ -379,33 +384,57 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
     static final int GET_FROM_GALLERY = 3;
 
     public void onClickOfPhotoView(View v) {
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setTitle("Map Marker");
+        builder.setMessage("Select Profile Photo From:.");
+        builder.setPositiveButton("Gallery",
+                new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int which) {
+                        startActivityForResult(new Intent(Intent.ACTION_GET_CONTENT, android.provider.MediaStore.Images.Media.INTERNAL_CONTENT_URI),
+                                GET_FROM_GALLERY);
+                    }
+                });
+        builder.setNegativeButton("Snap A Photo",
+                new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int which) {
+                        //This code redirects to the photo activity.
+                        Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+                        if (takePictureIntent.resolveActivity(getPackageManager()) != null) {
+                            // Take the picture
+                            startActivityForResult(takePictureIntent, REQUEST_IMAGE_CAPTURE);
+                        }
+                    }
+                });
+        builder.show();
+
         //This code redirects to the photo activity.
-        Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-        if (takePictureIntent.resolveActivity(getPackageManager()) != null) {
+//        Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+//        if (takePictureIntent.resolveActivity(getPackageManager()) != null) {
+//
+//            // Request picture be saved to specific location?
+////            try {
+////                takePictureIntent.putExtra(MediaStore.EXTRA_OUTPUT,
+////                        FileProvider.getUriForFile(this,
+////                                "cs5551.lab_6.android.fileprovider",
+////                                File.createTempFile("map_marker",  /* prefix */
+////                                        ".jpg",         /* suffix */
+////                                        getExternalFilesDir(Environment.DIRECTORY_PICTURES))      /* directory */
+////                        ));
+////            }
+////            catch (IOException ex) {
+////            }
+//            // Take the picture
+//            startActivityForResult(takePictureIntent, REQUEST_IMAGE_CAPTURE);
+//        }
 
-            // Request picture be saved to specific location?
-//            try {
-//                takePictureIntent.putExtra(MediaStore.EXTRA_OUTPUT,
-//                        FileProvider.getUriForFile(this,
-//                                "cs5551.lab_6.android.fileprovider",
-//                                File.createTempFile("map_marker",  /* prefix */
-//                                        ".jpg",         /* suffix */
-//                                        getExternalFilesDir(Environment.DIRECTORY_PICTURES))      /* directory */
-//                        ));
-//            }
-//            catch (IOException ex) {
-//            }
-            // Take the picture
-            startActivityForResult(takePictureIntent, REQUEST_IMAGE_CAPTURE);
-        }
-
-        // code to open public storage to pick a pic
+        // code to open gallery to pick a map_marker pic
 //        startActivityForResult( new Intent(Intent.ACTION_GET_CONTENT, android.provider.MediaStore.Images.Media.INTERNAL_CONTENT_URI),
 //                                GET_FROM_GALLERY );
 
     }
 
-    // set image on image button
+
+    // handles action
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         if (requestCode == REQUEST_IMAGE_CAPTURE && resultCode == RESULT_OK) {
@@ -414,17 +443,48 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
 //            mPhotoButton.setImageBitmap(imageBitmap);
             mPhotoView.setImageBitmap(imageBitmap);
 
-            // save to public pics directory
-            try
-            {
+            // save to my app's pics directory
+            try {
                 FileOutputStream out = new FileOutputStream(new File(getExternalFilesDir(Environment.DIRECTORY_PICTURES),
-                                                                     "map_marker.jpg"));
+                        "map_marker.jpg"));
                 imageBitmap.compress(Bitmap.CompressFormat.PNG, 100, out);
                 out.flush();
                 out.close();
+            } catch (Exception e) {
             }
-            catch (Exception e)
-            {
+        }
+        // requestCode == GET_FROM_GALLERY
+        else {
+            Uri imageUri = data.getData();
+            mPhotoView.setImageURI(imageUri);
+
+            Bitmap imageBitmap = null;
+            Bitmap thumbnail = null;
+            // get pic
+            try {
+                final int THUMBNAIL_SIZE = 64;
+
+//              Bitmap thumbnail = (BitmapFactory.decodeFile(imageUri.getPath()));
+                InputStream is = this.getContentResolver().openInputStream(imageUri);
+                imageBitmap = BitmapFactory.decodeStream(is);
+
+                thumbnail = ThumbnailUtils.extractThumbnail(imageBitmap, THUMBNAIL_SIZE, THUMBNAIL_SIZE);
+//                thumbnail = ThumbnailUtils.extractThumbnail(BitmapFactory.decodeStream(is), THUMBNAIL_SIZE, THUMBNAIL_SIZE);
+
+//                Bitmap bitmap = MediaStore.Images.Media.getBitmap(this.getContentResolver(),imageUri);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+            // save to my app's pics directory
+            try {
+//                String mapMarkerFile = getExternalFilesDir(Environment.DIRECTORY_PICTURES) + File.separator + "map_marker.jpg";
+                FileOutputStream out = new FileOutputStream(new File(getExternalFilesDir(Environment.DIRECTORY_PICTURES),
+                        "map_marker.jpg"));
+//                imageBitmap.compress(Bitmap.CompressFormat.PNG, 100, out);
+                thumbnail.compress(Bitmap.CompressFormat.PNG, 100, out);
+                out.flush();
+                out.close();
+            } catch (Exception e) {
             }
         }
     }
