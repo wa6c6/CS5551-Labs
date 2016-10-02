@@ -5,6 +5,8 @@ import android.animation.AnimatorListenerAdapter;
 import android.annotation.TargetApi;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.graphics.Bitmap;
+import android.provider.MediaStore;
 import android.support.annotation.NonNull;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
@@ -28,6 +30,8 @@ import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import java.util.ArrayList;
@@ -40,6 +44,9 @@ import static android.Manifest.permission.READ_CONTACTS;
  */
 public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<Cursor> {
 
+//    ImageButton mPhotoButton;
+    ImageView mPhotoView;
+
     /**
      * Id to identity READ_CONTACTS permission request.
      */
@@ -50,7 +57,7 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
      * TODO: remove after connecting to a real authentication system.
      */
     private static final String[] DUMMY_CREDENTIALS = new String[]{
-            "foo@example.com:hello", "bar@example.com:world"
+            "admin@whatever.com:admin", "wayne@whatever.com:wayne"
     };
     /**
      * Keep track of the login task to ensure we can cancel it if requested.
@@ -93,6 +100,9 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
 
         mLoginFormView = findViewById(R.id.login_form);
         mProgressView = findViewById(R.id.login_progress);
+
+//        mPhotoButton = (ImageButton) findViewById(R.id.photoButton);
+        mPhotoView = (ImageView) findViewById(R.id.photoView);
     }
 
     private void populateAutoComplete() {
@@ -348,6 +358,38 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
         protected void onCancelled() {
             mAuthTask = null;
             showProgress(false);
+        }
+    }
+
+    static final int REQUEST_IMAGE_CAPTURE = 1;
+    static final int GET_FROM_GALLERY = 3;
+
+    public void onClickOfPhotoView(View v) {
+        //This code redirects to the photo activity.
+        Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+        if (takePictureIntent.resolveActivity(getPackageManager()) != null) {
+            // Request picture be saved to specific location?
+//            takePictureIntent.putExtra(MediaStore.EXTRA_OUTPUT, );
+            // Take the picture
+            startActivityForResult(takePictureIntent, REQUEST_IMAGE_CAPTURE);
+        }
+
+//        startActivityForResult( new Intent(Intent.ACTION_GET_CONTENT, android.provider.MediaStore.Images.Media.INTERNAL_CONTENT_URI),
+//                                GET_FROM_GALLERY );
+
+    }
+
+    // set image on image button
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if (requestCode == REQUEST_IMAGE_CAPTURE && resultCode == RESULT_OK) {
+            Bundle extras = data.getExtras();
+            Bitmap imageBitmap = (Bitmap) extras.get("data");
+//            mPhotoButton.setImageBitmap(imageBitmap);
+            mPhotoView.setImageBitmap(imageBitmap);
+
+            // save to public pics directory
+            File storageDir = getExternalFilesDir(Environment.DIRECTORY_PICTURES);
         }
     }
 }
