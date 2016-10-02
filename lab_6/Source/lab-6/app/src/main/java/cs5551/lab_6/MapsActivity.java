@@ -122,7 +122,8 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         //Setting our image as the marker icon.
         mMap.addMarker(new MarkerOptions().position(userCurrentLocationCorodinates)
                 .title("Your current address.").snippet(userAddress.toString())
-                .icon(BitmapDescriptorFactory.fromResource(R.drawable.marker_maps)));
+//                .icon(BitmapDescriptorFactory.fromResource(R.drawable.marker_maps)));
+                .icon(BitmapDescriptorFactory.fromResource(R.xml.file_paths)));
         //Setting the zoom level of the map.
         mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(userCurrentLocationCorodinates, 7));
     }

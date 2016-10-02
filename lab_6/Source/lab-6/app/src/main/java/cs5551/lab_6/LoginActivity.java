@@ -6,9 +6,11 @@ import android.annotation.TargetApi;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
+import android.os.Environment;
 import android.provider.MediaStore;
 import android.support.annotation.NonNull;
 import android.support.design.widget.Snackbar;
+import android.support.v4.content.FileProvider;
 import android.support.v7.app.AppCompatActivity;
 import android.app.LoaderManager.LoaderCallbacks;
 
@@ -34,6 +36,9 @@ import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -368,12 +373,24 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
         //This code redirects to the photo activity.
         Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
         if (takePictureIntent.resolveActivity(getPackageManager()) != null) {
+
             // Request picture be saved to specific location?
-//            takePictureIntent.putExtra(MediaStore.EXTRA_OUTPUT, );
+//            try {
+//                takePictureIntent.putExtra(MediaStore.EXTRA_OUTPUT,
+//                        FileProvider.getUriForFile(this,
+//                                "cs5551.lab_6.android.fileprovider",
+//                                File.createTempFile("map_marker",  /* prefix */
+//                                        ".jpg",         /* suffix */
+//                                        getExternalFilesDir(Environment.DIRECTORY_PICTURES))      /* directory */
+//                        ));
+//            }
+//            catch (IOException ex) {
+//            }
             // Take the picture
             startActivityForResult(takePictureIntent, REQUEST_IMAGE_CAPTURE);
         }
 
+        // code to open public storage to pick a pic
 //        startActivityForResult( new Intent(Intent.ACTION_GET_CONTENT, android.provider.MediaStore.Images.Media.INTERNAL_CONTENT_URI),
 //                                GET_FROM_GALLERY );
 
@@ -389,7 +406,17 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
             mPhotoView.setImageBitmap(imageBitmap);
 
             // save to public pics directory
-            File storageDir = getExternalFilesDir(Environment.DIRECTORY_PICTURES);
+            try
+            {
+                FileOutputStream out = new FileOutputStream(new File(getExternalFilesDir(Environment.DIRECTORY_PICTURES),
+                                                                     "map_marker.jpg"));
+                imageBitmap.compress(Bitmap.CompressFormat.PNG, 100, out);
+                out.flush();
+                out.close();
+            }
+            catch (Exception e)
+            {
+            }
         }
     }
 }

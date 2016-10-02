@@ -1,0 +1,5 @@
+<?xml version="1.0" encoding="utf-8"?>
+<paths xmlns:android="http://schemas.android.com/apk/res/android">
+    <!-- Settings->Storage->other->Android->data->cs5551.lab_6/files/pictures -->
+    <external-path name="my_images" path="Android/data/cs5551.lab_6/files/Pictures" />
+</paths>
