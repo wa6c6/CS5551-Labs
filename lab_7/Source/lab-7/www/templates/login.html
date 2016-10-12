@@ -1,0 +1,25 @@
+<ion-view view-title="Login">
+    <ion-header-bar class="bar-stable">
+        <h1 class="title">Lab 5</h1>
+    </ion-header-bar>
+    <ion-content>
+        <button class="button button-stable button-block"
+                ui-sref="home">
+            Login
+        </button>
+        <button class="button button-stable button-block"
+                ui-sref="register">
+            <!--ng-click="goRegister('/register')">-->
+            Register
+        </button>
+        <!-- Change to link
+        <button class="button button-stable button-block"
+                ui-sref="about">
+            about
+        </button> -->
+        <!--<a ui-sref="about" class="button button-stable ">about</a>-->
+        <div style="text-align:center">
+            <a nav-transition="none" ui-sref="about">about</a>
+        </div>
+    </ion-content>
+</ion-view>

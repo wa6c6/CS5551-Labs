@@ -1,0 +1,24 @@
+<ion-view view-title="Register">
+    <ion-content>
+        <form ng-submit="submitForm(user)">
+            <ion-list>
+                <ion-item class="item-input">
+                    <input type="text" ng-model="user.firstName" placeholder="First Name">
+                </ion-item>
+                <ion-item class="item-input">
+                    <input type="text" ng-model="user.lastName" placeholder="Last Name">
+                </ion-item>
+                <ion-item class="item-input">
+                    <input type="text" ng-model="user.workPhone" placeholder="Work Phone">
+                </ion-item>
+                <ion-item class="item-input">
+                    <input type="text" ng-model="user.homePhone" placeholder="Home Phone">
+                </ion-item>
+                <ion-item class="item-input">
+                    <input type="text" ng-model="user.email" placeholder="email">
+                </ion-item>
+                <input type="submit" class="button button-block button-positive" value="Submit">
+            </ion-list>
+        </form>
+    </ion-content>
+</ion-view>
