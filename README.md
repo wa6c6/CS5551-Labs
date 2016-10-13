@@ -11,3 +11,5 @@ Lab4 - https://github.com/wa6c6/CS5551-Labs/tree/master/lab_4
 Lab5 - https://github.com/wa6c6/CS5551-Labs/tree/master/lab_5
 
 Lab6 - https://github.com/wa6c6/CS5551-Labs/tree/master/lab_6
+
+Lab7 - https://github.com/wa6c6/CS5551-Labs/tree/master/lab_7
