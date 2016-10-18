@@ -18,36 +18,39 @@ module.exports = function(app) {
   // Templates
   var homeTemplate = path.join(app.settings.templatesDir, 'home');
 
-
   /* GET home page. */
   app.get('/', function(req, res, next) {
-    console.log('in \'/\'');
-    var s1;
-    var s2;
+      console.log('in \'/\'');
 
-//    client.get("http://localhost:8080/RESTExample/restexample/ctofservice", function (data, response) {
-    client.get("http://localhost:8080/ServiceA/servicea/myservicea", function (data, response) {
+      res.render(homeTemplate);
+  });
+
+  /* POST Count page. */
+  app.post('/count', function(req, res, next) {
+    console.log('in \'/count\'');
+
+    //console.log(req);
+    console.log('req.body.word =', req.body.word);
+
+    var s1_url = "http://localhost:8080/ServiceA/servicea/myservicea/" + req.body.word;
+    var s2_url = "http://localhost:8080/ServiceB/serviceb/myserviceb/" + req.body.word;
+
+    // Call to Service-A
+    client.get(s1_url, function (data, response) {
       // parsed response body as js object
       console.log(data);
 
-      // console.log(data.ctofservice.celsius[0]);
-      // s1 = data.ctofservice.celsius[0];
-      console.log(data.value);
-      // s1 = data.value;
+      // Call to Service-B
+      client.get(s2_url, function (data2, response2) {
+        // parsed response body as js object
+        console.log(data2);
 
-        // client.get("http://localhost:8080/RESTExample/restexample/ftocservice", function (data2, response2) {
-        client.get("http://localhost:8080/ServiceB/serviceb/myserviceb", function (data2, response2) {
-          // parsed response body as js object
-          console.log(data2);
+        res.locals = { word: req.body.word,
+                       svcA: data.consonantCount,
+                       svcB: data2.vowelCount };
 
-          // s2 = data2['F Value'];
-          // s2 = data2.value;
-
-          res.locals = { svcA: data.value,
-                         svcB: data2.value };
-
-          res.render(homeTemplate);
-        });
+        res.render(homeTemplate);
+      });
     });
 
   });

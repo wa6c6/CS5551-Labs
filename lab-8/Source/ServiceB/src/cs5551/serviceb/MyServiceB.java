@@ -15,23 +15,17 @@ import org.json.JSONObject;
  *
  */
 @Path("/myserviceb")
-public class MyServiceB {
-	@GET
-	@Produces("application/json")
-	public Response hello() throws JSONException {
- 
-		JSONObject jsonObject = new JSONObject();
-		jsonObject.put("value", "World!"); 
-
-		return Response.status(200).entity(jsonObject.toString()).build();
-	}
- 
+public class MyServiceB 
+{
 	@Path("{c}")
 	@GET
 	@Produces("application/json")
-	public Response boomerang(@PathParam("c") String str) throws JSONException {
+	public Response vowel(@PathParam("c") String str) throws JSONException 
+	{
+		System.out.println("in vowel()");
+		
 		JSONObject jsonObject = new JSONObject();
-		jsonObject.put("value", str); 
+		jsonObject.put("vowelCount", Vowel.count(str)); 
 
 		return Response.status(200).entity(jsonObject.toString()).build();
 	}

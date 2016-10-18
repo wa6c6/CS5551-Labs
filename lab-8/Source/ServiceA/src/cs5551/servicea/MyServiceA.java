@@ -14,23 +14,17 @@ import org.json.JSONObject;
  *
  */
 @Path("/myservicea")
-public class MyServiceA {
-	@GET
-	@Produces("application/json")
-	public Response hello() throws JSONException {
- 
-		JSONObject jsonObject = new JSONObject();
-		jsonObject.put("value", "Hello"); 
-
-		return Response.status(200).entity(jsonObject.toString()).build();
-	}
- 
+public class MyServiceA 
+{
 	@Path("{c}")
 	@GET
 	@Produces("application/json")
-	public Response boomerang(@PathParam("c") String str) throws JSONException {
+	public Response consonant(@PathParam("c") String str) throws JSONException 
+	{
+		System.out.println("in consonant()");
+
 		JSONObject jsonObject = new JSONObject();
-		jsonObject.put("value", str); 
+		jsonObject.put("consonantCount", Consonant.count(str)); 
 
 		return Response.status(200).entity(jsonObject.toString()).build();
 	}

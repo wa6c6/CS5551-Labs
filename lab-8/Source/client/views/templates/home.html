@@ -1,8 +1,18 @@
 <div class="container-fluid">
-    <h3>Service-A Response</h3>
+    <!--<h3>Service-A Response</h3>
     <p>{{ svcA }}</p>
     <h3>Service-B Response</h3>
     <p>{{ svcB }}</p>
     <h3>Aggregated Together</h3>
-    <p>{{ svcA }} {{ svcB }}</p>
+    <p>{{ svcA }} {{ svcB }}</p>-->
+
+    <form class="form-home" action="/count" method="post">
+        <!--<h2 class="form-login-heading">Register New Account</h2>-->
+        <input type="text" name="word" value="{{ word }}"><br>
+        <button class="btn btn-lg btn-primary btn-block">Count</button>
+<!--        <button class="btn btn-lg btn-primary btn-block" href="/parse">Parse</button>-->
+        <h3></h3>
+        <p>Number of Consonants: {{ svcA }}</p>
+        <p>Number of Vowels: {{ svcB }}</p>
+    </form>
 </div>
