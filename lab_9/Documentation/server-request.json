@@ -1,0 +1,5 @@
+{ 
+  text: 'Hello my name is Wayne!',
+  source: 'en',
+  target: 'es'
+}

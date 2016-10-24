@@ -1,0 +1,5 @@
+{ 
+  translations: [ { translation: 'Hola mi nombre es Wayne!' } ],
+  word_count: 5,
+  character_count: 23
+}
