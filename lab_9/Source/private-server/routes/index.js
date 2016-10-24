@@ -2,6 +2,7 @@ var express = require('express');
 var unirest = require('unirest');
 var LanguageTranslatorV2 = require('watson-developer-cloud/language-translator/v2');
 
+// Connection info to my Language Translator service in IBM's Watson-Blumix cloud
 var language_translator = new LanguageTranslatorV2({
     "url": "https://gateway.watsonplatform.net/language-translator/api",
     "password": "7YvmbvmNbsQ2",
@@ -23,6 +24,7 @@ router.get('/xlate', function(req, res, next) {
   //  target: 'es' }
   var content = req.body;
 
+  // I can only make 25 calls per day for free with this API.
   // These code snippets use an open-source library. http://unirest.io/nodejs
   unirest.post("https://neutrinoapi-bad-word-filter.p.mashape.com/bad-word-filter")
       .header("X-Mashape-Key", "iL6mqrNdl7mshpOVMhhgXaqB6zMFp1IkbndjsnCiU61AOS2EpQ")
@@ -39,9 +41,7 @@ router.get('/xlate', function(req, res, next) {
     // update with censored content
     content.text = result.body['censored-content'];
 
-    language_translator.translate(//{
-            // text: 'A sentence must have a verb', source : 'en', target: 'es' },
-            //   req.body,
+    language_translator.translate(
               content,
               function (err, translation) {
 
@@ -56,7 +56,6 @@ router.get('/xlate', function(req, res, next) {
        res.json(translation)
      });
 
-     // res.render('index', { title: 'Express' });
   });
 
 });
