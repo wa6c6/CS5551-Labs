@@ -1,0 +1,14 @@
+branch-defaults:
+  default:
+    environment: crud-service-env
+environment-defaults:
+  crud-service-env:
+    branch: null
+    repository: null
+global:
+  application_name: crud-service
+  default_ec2_keyname: wa0001-key-pair-useastva
+  default_platform: node.js
+  default_region: us-east-1
+  profile: eb-cli
+  sc: null
