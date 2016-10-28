@@ -17,7 +17,7 @@ var findAllDocuments = function(db, res, callback) {
     // Find all users
     collection.find({}).toArray(function(err, docs) {
         assert.equal(err, null);
-        console.log("Found the following records");
+        console.log("Found the following documents");
         console.dir(docs);
         callback(docs);
     });
@@ -31,7 +31,7 @@ var findDocument = function(db, query, res, callback) {
     // Find specific user
     collection.find(query).toArray(function(err, docs) {
         assert.equal(err, null);
-        console.log("Found the following records");
+        console.log("Found the following document");
         console.dir(docs);
         callback(docs)
     });
@@ -43,7 +43,7 @@ var insertDocument = function(db, item, res, callback) {
     // Insert some documents
     collection.insertOne(item, function(err, result) {
         assert.equal(err, null);
-        console.log("Inserted document into collection");
+        console.log("Inserted document");
         callback(result);
     });
 };
@@ -55,11 +55,22 @@ var updateDocument = function(db, key, set, res, callback) {
     collection.updateOne(key , set, function(err, result) {
             assert.equal(err, null);
             assert.equal(1, result.result.n);
-            console.log("Updated the document");
+            console.log("Updated document");
             callback(result);
         });
 };
 
+var deleteDocument = function(db, key, res, callback) {
+    // Get the documents collection
+    var collection = db.collection('user');
+    // Insert some documents
+    collection.deleteOne(key, function(err, result) {
+        assert.equal(err, null);
+        assert.equal(1, result.result.n);
+        console.log("Deleted document");
+        callback(result);
+    });
+}
 
 //
 // Expose
@@ -133,15 +144,24 @@ module.exports = function(app) {
                 db.close();
 
                 // loop
-                var rows;
+                var rows = null;
                 for(var i = 0; i < docs.length; i++) {
 
-                    rows = rows +
-                           "<tr>" +
-                           "<td><a href=\"/user_details?user=" + docs[i].email + "\">" + docs[i].firstName + "</a></td>" +
-                           "<td>" + docs[i].lastName + "</td>" +
-                           "<td>" + docs[i].email + "</td>" +
-                           "</tr>";
+
+                    rows = rows != null
+                           ?
+                            rows +
+                            "<tr>" +
+                            "<td><a href=\"/user_details?user=" + docs[i].email + "\">" + docs[i].firstName + "</a></td>" +
+                            "<td>" + docs[i].lastName + "</td>" +
+                            "<td>" + docs[i].email + "</td>" +
+                            "</tr>"
+                           :
+                            "<tr>" +
+                            "<td><a href=\"/user_details?user=" + docs[i].email + "\">" + docs[i].firstName + "</a></td>" +
+                            "<td>" + docs[i].lastName + "</td>" +
+                            "<td>" + docs[i].email + "</td>" +
+                            "</tr>";
                 }
 
                 res.locals.tableRows = rows;
@@ -184,11 +204,27 @@ module.exports = function(app) {
     });
 
     /* GET delete_user page. */
-    app.get('/delete_user', function(req, res, next) {
+    app.post('/delete_user', function(req, res, next) {
         console.log('in \'/delete_user\'');
 
-        // delete user
-        res.redirect('/users');
+        console.log("req.body.email = ", req.body.email);
+
+        // Use connect method to connect to the Server
+        MongoClient.connect(url, function(err, db) {
+            assert.equal(null, err);
+            console.log("Connected correctly to server");
+
+            var key = { email: req.body.email };
+
+            // Delete
+            deleteDocument(db, key, res, function(result){
+                db.close();
+
+                // redirect to users
+                res.redirect('/users');
+            });
+
+        });
 
     });
 
