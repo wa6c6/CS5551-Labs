@@ -1,0 +1,8 @@
+
+
+// CD to the root directory where the project is located.  Ex. C:\Users\wa4101\Documents\Masters\CS5551\repo\CS5551-Labs\lab_10\Source\crud-service
+// A couple of times I was actually tring to run the following in ../Source which obviously didn't work.
+
+>eb init --platform node.js --region us-east-1
+
+>eb deploy
