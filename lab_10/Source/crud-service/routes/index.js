@@ -81,6 +81,7 @@ module.exports = function(app) {
     var baseLayout = path.join(app.settings.layoutsDir, 'layout');
     // Templates
     var loginTemplate = path.join(app.settings.templatesDir, 'login');
+    var loginErrorTemplate = path.join(app.settings.templatesDir, 'login_error');
     var signupTemplate = path.join(app.settings.templatesDir, 'signup');
     var usersTemplate = path.join(app.settings.templatesDir, 'users');
     var userDetailsTemplate = path.join(app.settings.templatesDir, 'user_details');
@@ -90,6 +91,13 @@ module.exports = function(app) {
         console.log('in \'/\'');
 
         res.render(loginTemplate);
+    });
+
+    /* GET login error page. */
+    app.get('/error', function(req, res, next) {
+        console.log('in \'/error\'');
+
+        res.render(loginErrorTemplate);
     });
 
     /* GET signup page. */
@@ -111,6 +119,7 @@ module.exports = function(app) {
             console.log("Connected correctly to server");
 
             var item = { email: req.body.email,
+                         password: req.body.password,
                          firstName: req.body.firstName,
                          lastName : req.body.lastName,
                          address: req.body.address,
@@ -265,6 +274,7 @@ module.exports = function(app) {
 
         // console.log(req);
         console.log('req.body.email=' + req.body.email);
+        console.log('req.body.password=' + req.body.password);
 
         // Use connect method to connect to the Server
         MongoClient.connect(url, function(err, db) {
@@ -275,14 +285,22 @@ module.exports = function(app) {
             findDocument(db, query, res, function(docs) {
                 if(docs.length > 0) {
                     console.log('registered');
-                    findAllDocuments(db, res, function(docs) {
-                        db.close();
+                    console.log('docs[0].password' + docs[0].password);
 
-                        console.log('redirect.. ');
-                        // return res.redirect('/users');
-                        //   return '/users';
-                        res.redirect('/users');
-                    });
+                    // they exist in the db so now check their password
+                    if(req.body.password != docs[0].password){
+                        res.redirect('/error');
+                    }
+                    else {
+                        findAllDocuments(db, res, function(docs) {
+                            db.close();
+
+                            console.log('redirect.. ');
+                            // return res.redirect('/users');
+                            //   return '/users';
+                            res.redirect('/users');
+                        });
+                    }
                 }
                 else {
                     db.close();
