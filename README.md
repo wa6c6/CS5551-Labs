@@ -17,3 +17,6 @@ Lab7 - https://github.com/wa6c6/CS5551-Labs/tree/master/lab_7
 Lab8 - https://github.com/wa6c6/CS5551-Labs/tree/master/lab-8
 
 Lab9 - https://github.com/wa6c6/CS5551-Labs/tree/master/lab_9
+
+Lab10 - https://github.com/wa6c6/CS5551-Labs/tree/master/lab_10
+AWS URL - http://crud-service-env.us-east-1.elasticbeanstalk.com/
